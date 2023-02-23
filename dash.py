@@ -1,0 +1,128 @@
+from tkinter import *
+from PIL import ImageTk, Image
+import sqlite3
+from tkinter import messagebox
+import runpy
+coffeeee=Tk()
+coffeeee.attributes('-fullscreen',TRUE)
+coffeeee.config(bg="white")
+exit=Frame(coffeeee,bg="grey",width=1700,height=31)
+exit.place(x=0,y=0)
+board=Frame(coffeeee,bg="black",width=1700,height=71)
+board.place(x=0,y=30)
+title=Label(coffeeee,text="Coffee Couture",bg="black",bd=0,fg="white",font=("Britannic Bold",40))
+title.place(x=600,y=38)
+whit=Frame(board,bg="white",bd=0,width=1700,height=3)
+whit.place(x=0,y=0)
+
+def signinin():
+    coffeeee.destroy()
+    runpy.run_path ("signup.py")
+
+def logout():
+    conn = sqlite3.connect('admin.db')
+    c = conn.cursor()
+    c.execute("UPDATE users SET status=? WHERE status=?", (False, True))
+    conn.commit()
+    conn.close()
+    messagebox.showinfo("Success", "You have successfully logged out!")
+    signinin()
+
+def manageuserin():
+    runpy.run_path("anuu.py")
+
+def admin_only():
+    conn = sqlite3.connect('admin.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM admin WHERE status=?", (True,))
+    active_user = c.fetchone()
+    if not active_user:
+        messagebox.showwarning("Warning", "No active user.")
+        conn.close()
+        return
+    c.execute("SELECT * FROM admin WHERE mail=? AND status=?",
+              (active_user[2], True, active_user[0]))
+    admin = c.fetchone()
+    if not admin:
+        messagebox.showerror("Error", "Only admins can perform this action.")
+        conn.close()
+        return
+    manageuserin()
+    conn.close()
+
+def on_closing():
+    tata=Tk()
+    tata.config(bg="#FAFAFA")
+    tata.geometry("585x135+500+350")
+    tata.overrideredirect(1)
+    blablabla=Label(tata,text="Are you sure you want to exit application?",bg="#FAFAFA",bd=0,fg="Black",font=("Bahnschrift",13))
+    blablabla.place(x=10,y=40)
+    button2=Button(tata,text="No",fg="black",bg='#D3D3D3',bd=0,cursor='hand2',width=7,command=tata.destroy,height=0,font=("Bahnschrift",14))
+    button2.place(x=490,y=90)
+    button2.bind("<Enter>",lambda event: button2.config(bg="#EDECE3"))
+    button2.bind("<Leave>",lambda event: button2.config(bg="#D3D3D3"))
+    button=Button(tata,text="Yes",fg="White",bg='grey',cursor='hand2',bd=0,width=7,command=quit,height=0,font=("Bahnschrift",14))
+    button.place(x=390,y=90)
+    button.bind("<Enter>",lambda event: button.config(bg="#D3D3D3"))
+    button.bind("<Leave>",lambda event: button.config(bg="grey"))
+    Frame1=Frame(tata,bg="grey",height=26,width=700)
+    Frame1.place(x=0,y=0)
+bye=Button(exit,bg="grey",text="X",fg="white",command=on_closing,bd=0,width=4,height=1,cursor='hand2',font=("Verdana",13))
+bye.place(x=1490,y=0)
+bye.bind("<Enter>",lambda event: bye.config(bg="red"))
+bye.bind("<Leave>",lambda event: bye.config(bg="grey"))
+dash=Frame(coffeeee,bg="black",width=200,height=900).place(x=0,y=100)
+image09=Image.open('123.png')
+coff399=ImageTk.PhotoImage(image09)
+home111=Label(dash,image=coff399,bg="white",cursor='hand2',bd=0).place(x=450,y=125)
+image092=Image.open('hmm.png')
+coff3929=ImageTk.PhotoImage(image092)
+home111=Label(dash,image=coff3929,bg="white",cursor='hand2',bd=0).place(x=1300,y=685)
+white1=Frame(dash,bg="white",bd=0,width=200,height=3).place(x=0,y=100)
+white3=Frame(dash,bg="white",bd=0,width=200,height=3).place(x=0,y=340)
+welcome090=Label(dash,text='" Indulge in the taste of happiness at our cafe "',bg="#FAFAFA",bd=0,fg="#A6662E",font=("Britannic Bold",30))
+welcome090.place(x=440,y=120)
+def profilee():
+    runpy.run_path("profileeditt.py")
+def bill():
+    runpy.run_path("billl.py")
+def abouut():
+    coffeeee.destroy()
+    runpy.run_path("aboutus.py")
+def menuu():
+    coffeeee.destroy()
+    runpy.run_path("sl.py")
+image=Image.open('profile.png')
+coff3=ImageTk.PhotoImage(image)
+home=Button(dash,image=coff3,command=profilee,cursor='hand2',bg="black",bd=0).place(x=0,y=102)
+white=Frame(dash,bg="white",bd=0,width=200,height=3).place(x=0,y=180)
+image2=Image.open('menu.png')
+coff4=ImageTk.PhotoImage(image2)
+menu=Button(dash,image=coff4,command=menuu,cursor='hand2',bg="black",bd=0).place(x=0,y=184)
+image200=Image.open('bill.png')
+coff400=ImageTk.PhotoImage(image200)
+menu00=Button(dash,command=bill,image=coff400,cursor='hand2',bg="black",bd=0)
+menu00.place(x=0,y=263)
+white2=Frame(dash,bg="white",bd=0,width=200,height=3).place(x=0,y=262)
+im=Image.open('us.png')
+cof=ImageTk.PhotoImage(im)
+me=Button(dash,image=cof,command=abouut,cursor='hand2',bg="black",bd=0)
+me.place(x=0,y=342)
+white7=Frame(dash,bg="white",bd=0,width=200,height=3).place(x=0,y=340)
+ima=Image.open('ex.png')
+coff=ImageTk.PhotoImage(ima)
+men=Button(dash,command=on_closing,image=coff,cursor='hand2',bg="black",bd=0)
+men.place(x=0,y=421)
+whi=Frame(dash,bg="white",bd=0,width=200,height=3).place(x=0,y=420)
+ima21=Image.open('logout.png')
+coff21=ImageTk.PhotoImage(ima21)
+men21=Button(dash,command=logout,image=coff21,cursor='hand2',bg="black",bd=0)
+men21.place(x=0,y=500)
+whiz=Frame(dash,bg="white",bd=0,width=200,height=3).place(x=0,y=500)
+ima211=Image.open('manage.png')
+coff211=ImageTk.PhotoImage(ima211)
+men211=Button(dash,command=manageuserin,image=coff211,cursor='hand2',bg="black",bd=0)
+men211.place(x=0,y=579)
+whizv=Frame(dash,bg="white",bd=0,width=200,height=3).place(x=0,y=660)
+whizv=Frame(dash,bg="white",bd=0,width=200,height=3).place(x=0,y=580)
+coffeeee.mainloop()
